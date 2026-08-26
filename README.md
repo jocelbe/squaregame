@@ -1,0 +1,3 @@
+SQUAREGAME
+
+JS vanilla project
