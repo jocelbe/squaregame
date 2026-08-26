@@ -1,3 +1,3 @@
 SQUAREGAME
 
-JS vanilla project
+JS vanilla project created by Jocelbe
