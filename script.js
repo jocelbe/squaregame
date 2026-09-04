@@ -3,6 +3,13 @@ const ctx = canvas.getContext("2d")
 
 let raf
 
+const keyState = {
+    ArrowDown:false,
+    ArrowUp:false,
+    ArrowLeft:false,
+    ArrowRight:false
+}
+
 const player = {
     x:30,
     y:30,
@@ -19,75 +26,69 @@ const player = {
 
 }
 
- function drawDown() {
+ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     player.draw()
-    player.y += player.vy;
-
-    if (player.y + player.vy > canvas.height - player.radius || player.y + player.vy < player.radius) 
-        {
-            player.y -= player.vy;
-        }
-
-    raf = window.requestAnimationFrame(drawDown);
- }
-
- function drawUp() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    player.draw()
-    player.y -= player.vy;
-
-    if (player.y + player.vy > canvas.height - player.radius || player.y + player.vy < player.radius) 
-        {
+    
+        if(keyState.ArrowDown == true){
             player.y += player.vy;
+
+            if (player.y + player.vy > canvas.height - player.radius || player.y + player.vy < player.radius) 
+                {
+                    player.y -= player.vy;
+                }
         }
 
-    raf = window.requestAnimationFrame(drawUp);
- }
+        if(keyState.ArrowUp == true){
+            player.y -= player.vy;
 
- function drawRight() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    player.draw()
-    player.x += player.vx;
+            if (player.y + player.vy > canvas.height - player.radius || player.y + player.vy < player.radius) 
+                {
+                    player.y += player.vy;
+                }
+        }
 
-    if (player.x + player.vx > canvas.width - player.radius || player.x + player.vx < player.radius) 
-        {
+        if(keyState.ArrowLeft == true){
             player.x -= player.vx;
+
+            if (player.x + player.vx > canvas.width - player.radius || player.x + player.vx < player.radius) 
+                {
+                    player.x += player.vx;
+                }
         }
 
-    raf = window.requestAnimationFrame(drawRight);
- }
-
- function drawLeft() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    player.draw()
-    player.x -= player.vx;
-
-    if (player.x + player.vx > canvas.width - player.radius || player.x + player.vx < player.radius) 
-        {
+        if(keyState.ArrowRight == true){
             player.x += player.vx;
+
+            if (player.x + player.vx > canvas.width - player.radius || player.x + player.vx < player.radius) 
+                {
+                    player.x -= player.vx;
+                }
         }
 
-    raf = window.requestAnimationFrame(drawLeft);
+    
+    raf = window.requestAnimationFrame(draw);
  }
 
 document.addEventListener("keydown", function(e){
-        console.log(e.code, "touche")
-        if (e.code == 'ArrowDown') {
-           raf = window.requestAnimationFrame(drawDown);
+        for(const [cle, value] of Object.entries(keyState)){
+            if(cle == e.code){
+                keyState[e.code] = true
+            }else{
+                keyState[cle] = false
+            }
         }
-        if (e.code == 'ArrowUp'){
-           raf = window.requestAnimationFrame(drawUp);
-        }
-        if (e.code == 'ArrowRight'){
-           raf = window.requestAnimationFrame(drawRight);
-        }
-        if (e.code == 'ArrowLeft'){
-           raf = window.requestAnimationFrame(drawLeft);
-        }
+
+   raf = window.requestAnimationFrame(draw);
+       
 })
 
 document.addEventListener("keyup", function(e){
+        for(const [cle, value] of Object.entries(keyState)){
+            if(cle == e.code){
+                keyState[e.code] = false
+            }
+        }
         window.cancelAnimationFrame(raf);
 })
 
